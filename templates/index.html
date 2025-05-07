@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Список Книг</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      background: linear-gradient(135deg, #d0e4f3, #d9d9d9);
+      color: #333;
+      margin: 0;
+      padding: 20px;
+    }
+
+    /* Заголовки */
+    h1 {
+      text-align: center;
+      color: #007bff;
+      margin-bottom: 20px;
+    }
+
+    h2 {
+      color: #007bff;
+      margin-top: 40px;
+      text-align: center;
+    }
+
+    /* Форма для додавання книги */
+    form {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background: #ffffff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      margin-bottom: 40px;
+      max-width: 600px;
+      margin: 20px auto;
+    }
+
+    form label {
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+
+    form input, form textarea {
+      padding: 10px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      margin-bottom: 15px;
+      width: 100%;
+    }
+
+    form button {
+      padding: 10px 20px;
+      background: #28a745;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+
+    form button:hover {
+      transform: translateY(-3px);
+      background-color: #218838;
+    }
+
+    /* Картки книг */
+    .book {
+      background: linear-gradient(145deg, #ffffff, #f4f8fb);
+      border-radius: 10px;
+      padding: 20px;
+      margin-bottom: 15px;
+      box-shadow: 10px 10px 30px rgba(0, 0, 0, 0.1), -10px -10px 30px rgba(255, 255, 255, 0.3);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .book:hover {
+      transform: translateY(-5px);
+      box-shadow: 10px 10px 40px rgba(0, 0, 0, 0.2), -10px -10px 40px rgba(255, 255, 255, 0.4);
+    }
+
+    .book-title {
+      font-size: 1.2em;
+      font-weight: bold;
+      color: #007bff;
+    }
+
+    .delete-link {
+      color: red;
+      margin-left: 10px;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .delete-link:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Список Книг</h1>
+  
+  <form action="/add" method="post">
+    <label for="title">Назва:</label>
+    <input type="text" id="title" name="title" required><br>
+    
+    <label for="author">Автор:</label>
+    <input type="text" id="author" name="author" required><br>
+    
+    <label for="description">Опис:</label>
+    <textarea id="description" name="description" rows="4" cols="50"></textarea><br>
+    
+    <button type="submit">Додати Книгу</button>
+  </form>
+
+  <h2>Список Книг:</h2>
+
+  {% if books %}
+    {% for book_id, book_data in books.items() %}
+      <div class="book">
+        <span class="book-title">{{ book_data['title'] }}</span> - {{ book_data['author'] }}
+        {% if book_data['description'] %}
+          <p>{{ book_data['description'] }}</p>
+        {% endif %}
+        <a href="{{ url_for('delete_book', book_id=book_id[5:]) }}" class="delete-link">Видалити</a>
+      </div>
+    {% endfor %}
+  {% else %}
+    <p>Книг поки немає.</p>
+  {% endif %}
+
+</body>
+</html>
